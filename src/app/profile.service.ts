@@ -1,24 +1,17 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class ProfileService {
 
-constructor() { }
+  constructor(private _httpService: HttpClient) { }
 
+  getProfile(): Observable<any> {
 
-getProfile(): Observable<any> {
-
-  return new Observable(observer => {
-    
-    observer.next({
-      displayName:  "Ahtsham",
-      givenName:  "Ahtsham",
-      id:  1,
-      mail:  "Ahtsham@gmail.com",
-    });
-  })
-}
+    return this._httpService.get<any>('https://graph.microsoft.com/v1.0/me');
+  }
 }

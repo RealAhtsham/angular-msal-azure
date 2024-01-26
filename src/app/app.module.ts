@@ -5,22 +5,23 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ProfileComponent } from './profile/profile.component';
 import { HomeComponent } from './home/home.component';
-import { MSAL_GUARD_CONFIG, MSAL_INSTANCE, MSAL_INTERCEPTOR_CONFIG, MsalBroadcastService, MsalGuardAuthRequest, MsalGuardConfiguration, MsalInterceptor, MsalInterceptorConfiguration, MsalRedirectComponent, MsalService } from '@azure/msal-angular';
+import { MSAL_GUARD_CONFIG, MSAL_INSTANCE, MSAL_INTERCEPTOR_CONFIG, MsalBroadcastService, MsalGuard, MsalGuardAuthRequest, MsalGuardConfiguration, MsalInterceptor, MsalInterceptorConfiguration, MsalRedirectComponent, MsalService } from '@azure/msal-angular';
 import { IPublicClientApplication, InteractionType, LogLevel, PublicClientApplication } from '@azure/msal-browser';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { ProfileService } from './profile.service';
 
 function MsalInstanceFactory(): IPublicClientApplication {
 
   return new PublicClientApplication({
     auth: {
-      clientId: '',
-      authority: 'https://login.microsoftonline.com/tenetId',
+      clientId: '2f51cf4b-078b-4ad4-b66c-43707b511fbd',
+      authority: 'https://login.microsoftonline.com/1b8eed39-0b95-4bf3-be4a-dd460677df5d',
       redirectUri: '/auth',
     },
     system: {
       loggerOptions: {
         loggerCallback: (lvl, msg, containsPii) => {
-          console.log("msg");
+          console.log(msg);
         },
         logLevel: LogLevel.Verbose
       }
@@ -54,7 +55,8 @@ function MsalInterceptorConfigFactory(): MsalInterceptorConfiguration {
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
   providers: [{
     provide: MSAL_INSTANCE,
@@ -74,7 +76,8 @@ function MsalInterceptorConfigFactory(): MsalInterceptorConfiguration {
     useFactory: MsalInterceptorConfigFactory
   },
   MsalService,
-  MsalBroadcastService
+  MsalBroadcastService,
+  MsalGuard,
 ],
   bootstrap: [AppComponent, MsalRedirectComponent]
 })

@@ -53,7 +53,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   logout(){
-    this._msalService.instance.loginRedirect();
+    this._msalService.instance.logoutRedirect();
   }
 
   setAuthenticationStatus() {
